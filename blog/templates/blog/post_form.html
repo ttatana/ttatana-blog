@@ -1,0 +1,83 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ title }} - Tatana{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">{{ title }}</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="image" style="width: 18px; height: 18px;"></i>
+                Photos
+            </label>
+            {{ form.images }}
+            {% if form.images.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.images.errors }}
+                </div>
+            {% endif %}
+            <small style="color: #666; font-size: 0.85rem;">
+                Select multiple photos to share your story (hold Ctrl/Cmd to select multiple)
+            </small>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="type" style="width: 18px; height: 18px;"></i>
+                Post title
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="map-pin" style="width: 18px; height: 18px;"></i>
+                Location
+            </label>
+            {{ form.location }}
+            {% if form.location.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.location.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="edit-3" style="width: 18px; height: 18px;"></i>
+                Story
+            </label>
+            {{ form.content }}
+            {% if form.content.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.content.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="submit" class="btn btn-primary">
+                <i data-feather="share" style="width: 18px; height: 18px;"></i>
+                Share Story
+            </button>
+            <a href="{% url 'post_list' %}" class="btn btn-secondary">
+                <i data-feather="x" style="width: 18px; height: 18px;"></i>
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    feather.replace();
+</script>
+{% endblock %}

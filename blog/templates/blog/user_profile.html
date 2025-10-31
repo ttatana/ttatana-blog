@@ -1,0 +1,123 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ profile_user.username }} - Tatana{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    {% if profile_user.profile.avatar %}
+        <div style="width: 120px; height: 120px; border-radius: 60px; overflow: hidden; border: 4px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: 0 auto 1rem; position: relative;">
+            <img src="{{ profile_user.profile.avatar.url }}" alt="{{ profile_user.username }}" 
+                 style="position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; object-fit: cover; transform: translate(-50%, -50%);">
+        </div>
+    {% else %}
+        <div style="width: 120px; height: 120px; border-radius: 60px; background: #ddd; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 4px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <i data-feather="user" style="width: 48px; height: 48px; color: #666;"></i>
+        </div>
+    {% endif %}
+    
+    <h1 class="profile-name">{{ profile_user.get_full_name|default:profile_user.username }}</h1>
+    
+    {% if profile_user.profile.bio %}
+        <p class="profile-bio">{{ profile_user.profile.bio }}</p>
+    {% endif %}
+    
+    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; font-size: 0.9rem; color: #666;">
+        <div>
+            <strong>{{ posts.count }}</strong> photo{{ posts.count|pluralize }}
+        </div>
+        {% if profile_user.profile.location %}
+            <div>
+                <i data-feather="map-pin" style="width: 14px; height: 14px;"></i>
+                {{ profile_user.profile.location }}
+            </div>
+        {% endif %}
+        {% if profile_user.profile.website %}
+            <div>
+                <a href="{{ profile_user.profile.website }}" target="_blank" style="color: var(--secondary-color); text-decoration: none;">
+                    <i data-feather="link" style="width: 14px; height: 14px;"></i>
+                    Website
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    {% if user == profile_user %}
+        <div style="margin-top: 1.5rem;">
+            <a href="{% url 'edit_profile' %}" class="btn btn-secondary">
+                <i data-feather="edit" style="width: 16px; height: 16px;"></i>
+                Edit Profile
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="photo-grid">
+    {% for post in posts %}
+        <article class="photo-card">
+            {% if post.get_first_image %}
+                {% if post.slug %}
+                    <a href="{% url 'post_detail' post.slug %}">
+                        <img src="{{ post.get_first_image.url }}" alt="{{ post.title }}">
+                        {% if post.images.count > 1 %}
+                            <div class="image-count-badge">
+                                <i data-feather="layers" style="width: 14px; height: 14px;"></i>
+                                {{ post.images.count }}
+                            </div>
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <img src="{{ post.get_first_image.url }}" alt="{{ post.title }}">
+                {% endif %}
+            {% endif %}
+            
+            <div class="card-content">
+                <h3 class="card-title">
+                    {% if post.slug %}
+                        <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                    {% else %}
+                        {{ post.title }}
+                    {% endif %}
+                </h3>
+                
+                {% if post.location %}
+                    <div class="card-location">
+                        <i data-feather="map-pin" style="width: 14px; height: 14px;"></i>
+                        {{ post.location }}
+                    </div>
+                {% endif %}
+                
+                <div class="card-meta">
+                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                </div>
+                
+                <div class="card-stats">
+                    <span class="like-btn">
+                        <i data-feather="heart"></i>
+                        {{ post.total_likes }}
+                    </span>
+                    
+                    <span style="color: #666; font-size: 0.9rem;">
+                        <i data-feather="message-circle" style="width: 16px; height: 16px;"></i>
+                        {{ post.comments.count }}
+                    </span>
+                </div>
+            </div>
+        </article>
+    {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+            <i data-feather="camera" style="width: 48px; height: 48px; color: #ccc; margin-bottom: 1rem;"></i>
+            <h3 style="color: #666; margin-bottom: 1rem;">No photos yet</h3>
+            {% if user == profile_user %}
+                <p style="color: #999; margin-bottom: 2rem;">Share your first beautiful moment!</p>
+                <a href="{% url 'post_create' %}" class="btn btn-primary">Share a Photo</a>
+            {% else %}
+                <p style="color: #999;">{{ profile_user.username }} hasn't shared any photos yet.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    feather.replace();
+</script>
+{% endblock %}

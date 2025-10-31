@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Login - Tatana{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">Welcome Back</h2>
+        <p style="color: #666;">Sign in to share your beautiful moments</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="user" style="width: 18px; height: 18px;"></i>
+                Username
+            </label>
+            <input type="text" class="form-input" name="username" required>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="lock" style="width: 18px; height: 18px;"></i>
+                Password
+            </label>
+            <input type="password" class="form-input" name="password" required>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="submit" class="btn btn-primary">
+                <i data-feather="log-in" style="width: 18px; height: 18px;"></i>
+                Sign In
+            </button>
+            <a href="{% url 'post_list' %}" class="btn btn-secondary">
+                <i data-feather="arrow-left" style="width: 18px; height: 18px;"></i>
+                Back
+            </a>
+        </div>
+    </form>
+    
+    {% if form.errors %}
+        <div style="margin-top: 1.5rem; padding: 1rem; background: #f8d7da; color: #721c24; border-radius: 8px; text-align: center;">
+            Invalid username or password. Please try again.
+        </div>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <p style="color: #666;">
+            Don't have an account? 
+            <a href="{% url 'signup' %}" style="color: var(--secondary-color); text-decoration: none; font-weight: 600;">
+                Create one here
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    feather.replace();
+</script>
+{% endblock %}

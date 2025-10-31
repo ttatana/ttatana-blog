@@ -1,0 +1,94 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Join Tatana{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--primary-color); margin-bottom: 0.5rem;">Join Tatana</h2>
+        <p style="color: #666;">Create your account to start sharing beautiful moments</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="user" style="width: 18px; height: 18px;"></i>
+                Username
+            </label>
+            <input type="text" class="form-input" name="username" required>
+            {% if form.username.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+            {% if form.username.help_text %}
+                <small style="color: #666; font-size: 0.85rem; display: block; margin-top: 0.25rem;">
+                    {{ form.username.help_text }}
+                </small>
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="lock" style="width: 18px; height: 18px;"></i>
+                Password
+            </label>
+            <input type="password" class="form-input" name="password1" required>
+            {% if form.password1.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.password1.errors }}
+                </div>
+            {% endif %}
+            {% if form.password1.help_text %}
+                <small style="color: #666; font-size: 0.85rem; display: block; margin-top: 0.25rem;">
+                    {{ form.password1.help_text }}
+                </small>
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary-color);">
+                <i data-feather="lock" style="width: 18px; height: 18px;"></i>
+                Confirm Password
+            </label>
+            <input type="password" class="form-input" name="password2" required>
+            {% if form.password2.errors %}
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-top: 0.25rem;">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+            {% if form.password2.help_text %}
+                <small style="color: #666; font-size: 0.85rem; display: block; margin-top: 0.25rem;">
+                    {{ form.password2.help_text }}
+                </small>
+            {% endif %}
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="submit" class="btn btn-primary">
+                <i data-feather="user-plus" style="width: 18px; height: 18px;"></i>
+                Create Account
+            </button>
+            <a href="{% url 'post_list' %}" class="btn btn-secondary">
+                <i data-feather="arrow-left" style="width: 18px; height: 18px;"></i>
+                Back
+            </a>
+        </div>
+    </form>
+    
+    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <p style="color: #666;">
+            Already have an account? 
+            <a href="{% url 'login' %}" style="color: var(--secondary-color); text-decoration: none; font-weight: 600;">
+                Sign in here
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    feather.replace();
+</script>
+{% endblock %}
